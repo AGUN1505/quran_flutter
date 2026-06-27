@@ -3,12 +3,21 @@ import '../models/surah.dart';
 import '../services/quran_api_service.dart';
 
 class SurahController extends ChangeNotifier {
+  static final SurahController _instance = SurahController._internal();
+
+  factory SurahController() {
+    return _instance;
+  }
+
+  SurahController._internal();
+
   final QuranApiService _apiService = QuranApiService();
   List<Surah> _allSurah = [];
   List<Surah> _filteredSurah = [];
   bool _isLoading = true;
   String _errorMessage = '';
 
+  List<Surah> get allSurah => _allSurah;
   List<Surah> get filteredSurah => _filteredSurah;
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;

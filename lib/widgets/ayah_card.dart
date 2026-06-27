@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/surah.dart';
 import '../controllers/settings_controller.dart';
+import '../controllers/bookmark_controller.dart';
 
 class AyahCard extends StatelessWidget {
   final Ayat ayat;
   final bool isPlaying;
   final VoidCallback onPlayToggle;
+  final int surahNo;
+  final String surahName;
 
   const AyahCard({
     super.key,
     required this.ayat,
     required this.isPlaying,
     required this.onPlayToggle,
+    required this.surahNo,
+    required this.surahName,
   });
 
   @override
@@ -20,6 +25,7 @@ class AyahCard extends StatelessWidget {
     final themeColor = Theme.of(context).primaryColor;
     final accentColor = Theme.of(context).colorScheme.secondary;
     final settingsController = SettingsController();
+    final bookmarkController = BookmarkController();
 
     return ListenableBuilder(
       listenable: settingsController,
@@ -28,77 +34,117 @@ class AyahCard extends StatelessWidget {
         final textColor = Theme.of(context).brightness == Brightness.dark
             ? Colors.white70
             : Colors.black87;
-        final italicColor = Theme.of(context).brightness == Brightness.dark
-            ? Theme.of(context).colorScheme.secondary
-            : themeColor;
+        final italicColor = accentColor;
 
-        return Container(
-          margin: const EdgeInsets.only(bottom: 20),
-          decoration: BoxDecoration(
-            color: cardBgColor,
-            borderRadius: BorderRadius.circular(15),
-            border: isPlaying ? Border.all(color: accentColor, width: 1.5) : null,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.02),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              )
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Ayah Top Header (Number & Player Button)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: themeColor.withValues(alpha: 0.05),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
+        return ListenableBuilder(
+          listenable: bookmarkController,
+          builder: (context, child) {
+            final isBookmarked = bookmarkController.isBookmarked(surahNo, ayat.nomorAyat);
+            final isLastRead = bookmarkController.lastReadSurahNo == surahNo &&
+                bookmarkController.lastReadAyahNo == ayat.nomorAyat;
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: cardBgColor,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isPlaying
+                      ? accentColor
+                      : themeColor.withValues(alpha: 0.05),
+                  width: isPlaying ? 1.5 : 1.0,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.02),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: themeColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          ayat.nomorAyat.toString(),
-                          style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (ayat.audioUrl.isNotEmpty)
-                      IconButton(
-                        icon: Icon(
-                          isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
-                          color: themeColor,
-                          size: 28,
-                        ),
-                        onPressed: onPlayToggle,
-                      ),
-                  ],
-                ),
+                ],
               ),
-
-              // Ayah Content (Arabic, Latin, Indo)
-              Padding(
+              child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Top Row: Verse Number Star & Action Icons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Star Verse Number
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: accentColor.withValues(alpha: 0.25),
+                              size: 40,
+                            ),
+                            Text(
+                              ayat.nomorAyat.toString(),
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                color: themeColor,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Actions
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (ayat.audioUrl.isNotEmpty)
+                              IconButton(
+                                icon: Icon(
+                                  isPlaying ? Icons.pause_circle : Icons.play_circle,
+                                  color: themeColor,
+                                  size: 24,
+                                ),
+                                onPressed: onPlayToggle,
+                              ),
+                            IconButton(
+                              icon: Icon(
+                                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                                color: themeColor,
+                                size: 22,
+                              ),
+                              onPressed: () {
+                                bookmarkController.toggleBookmark(
+                                  surahNo,
+                                  surahName,
+                                  ayat.nomorAyat,
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                isLastRead ? Icons.flag : Icons.flag_outlined,
+                                color: isLastRead ? accentColor : themeColor,
+                                size: 22,
+                              ),
+                              tooltip: 'Tandai Terakhir Dibaca',
+                              onPressed: () {
+                                bookmarkController.saveLastRead(
+                                  surahNo,
+                                  surahName,
+                                  ayat.nomorAyat,
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Terakhir Dibaca: QS. $surahName Ayat ${ayat.nomorAyat}',
+                                    ),
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
                     // Arabic Text
                     Text(
                       ayat.teksArab,
@@ -111,37 +157,33 @@ class AyahCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Latin Text (Align Left)
-                    SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        ayat.teksLatin,
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
-                          fontSize: settingsController.translationFontSize,
-                          color: italicColor,
-                          fontStyle: FontStyle.italic,
-                        ),
+                    // Latin Text (Italic Gold)
+                    Text(
+                      ayat.teksLatin,
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.poppins(
+                        fontSize: settingsController.translationFontSize,
+                        color: italicColor,
+                        fontStyle: FontStyle.italic,
+                        height: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    // Indo Text (Align Left)
-                    SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        ayat.teksIndonesia,
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
-                          fontSize: settingsController.translationFontSize,
-                          color: textColor,
-                        ),
+                    const SizedBox(height: 10),
+                    // Indonesian Translation
+                    Text(
+                      ayat.teksIndonesia,
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.poppins(
+                        fontSize: settingsController.translationFontSize,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        height: 1.5,
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

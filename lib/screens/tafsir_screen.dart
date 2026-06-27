@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/surah.dart';
 import '../controllers/tafsir_controller.dart';
 import '../widgets/tafsir_card.dart';
+import '../widgets/shimmer_loading.dart';
 
 class TafsirScreen extends StatefulWidget {
   final Surah surah;
@@ -52,10 +53,31 @@ class _TafsirScreenState extends State<TafsirScreen> {
         listenable: _controller,
         builder: (context, child) {
           if (_controller.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(themeColor),
-              ),
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ShimmerLoading(width: 100, height: 18),
+                      SizedBox(height: 12),
+                      ShimmerLoading(width: double.infinity, height: 14),
+                      SizedBox(height: 6),
+                      ShimmerLoading(width: double.infinity, height: 14),
+                      SizedBox(height: 6),
+                      ShimmerLoading(width: 150, height: 14),
+                    ],
+                  ),
+                );
+              },
             );
           }
 
