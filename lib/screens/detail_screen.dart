@@ -8,6 +8,7 @@ import '../widgets/surah_header_card.dart';
 import '../widgets/persistent_audio_player.dart';
 import 'tafsir_screen.dart';
 import '../widgets/shimmer_loading.dart';
+import '../controllers/settings_controller.dart';
 
 class DetailScreen extends StatefulWidget {
   final Surah surah;
@@ -27,6 +28,7 @@ class _DetailScreenState extends State<DetailScreen> {
   final SurahDetailController _detailController = SurahDetailController();
   final AudioController _audioController = AudioController();
   final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<double> _scrollOffsetNotifier = ValueNotifier<double>(0.0);
   final Map<int, GlobalKey> _ayahKeys = {};
   bool _hasScrolled = false;
 
@@ -34,21 +36,32 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     super.initState();
     _detailController.fetchDetail(widget.surah.nomor);
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    _scrollOffsetNotifier.value = _scrollController.offset;
   }
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _detailController.dispose();
     _scrollController.dispose();
+    _scrollOffsetNotifier.dispose();
     super.dispose();
   }
 
   void _scrollToAyah(List<Ayat> ayatList, int ayahNo) {
     final index = ayatList.indexWhere((a) => a.nomorAyat == ayahNo);
     if (index != -1) {
+      final settings = SettingsController();
+      final double scale = (settings.arabicFontSize / 26.0 + settings.translationFontSize / 13.0) / 2.0;
+      final double estimatedCardHeight = 220.0 * scale;
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         // 1. Approximate scroll to bring the target item into viewport to trigger rendering
-        final double estimatedOffset = index * 220.0;
+        final double estimatedOffset = index * estimatedCardHeight;
         if (_scrollController.hasClients) {
           _scrollController.jumpTo(estimatedOffset.clamp(
             0.0,
@@ -245,18 +258,26 @@ class _DetailScreenState extends State<DetailScreen> {
                     return Column(
                       children: [
                         // Surah Info Header Card Component
-                        SurahHeaderCard(
-                          surah: widget.surah,
-                          detail: detail,
-                          isAudioPlaying: _audioController.isSurahAudioPlaying &&
-                              _audioController.playingSurahNo == widget.surah.nomor,
-                          onAudioPlayToggle: () => _handleSurahPlay(widget.surah.audioUrl),
+                        ValueListenableBuilder<double>(
+                          valueListenable: _scrollOffsetNotifier,
+                          builder: (context, scrollOffset, child) {
+                            final double shrinkProgress = (scrollOffset / 120.0).clamp(0.0, 1.0);
+                            return SurahHeaderCard(
+                              surah: widget.surah,
+                              detail: detail,
+                              isAudioPlaying: _audioController.isSurahAudioPlaying &&
+                                  _audioController.playingSurahNo == widget.surah.nomor,
+                              onAudioPlayToggle: () => _handleSurahPlay(widget.surah.audioUrl),
+                              shrinkProgress: shrinkProgress,
+                            );
+                          },
                         ),
 
                         // Ayah List Component
                         Expanded(
                           child: ListView.builder(
                             controller: _scrollController,
+                            cacheExtent: 4000,
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             itemCount: detail.ayat.length + (shouldShowBismillah ? 1 : 0),
                             itemBuilder: (context, index) {
@@ -306,7 +327,10 @@ class _DetailScreenState extends State<DetailScreen> {
               },
             ),
           ),
-          const PersistentAudioPlayer(),
+          SafeArea(
+            top: false,
+            child: const PersistentAudioPlayer(),
+          ),
         ],
       ),
     );

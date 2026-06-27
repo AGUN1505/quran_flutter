@@ -186,19 +186,37 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     if (_errorMessage.isNotEmpty) {
+      final isNetworkError = _errorMessage.contains('internet') ||
+          _errorMessage.contains('koneksi') ||
+          _errorMessage.contains('terhubung');
       return Center(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 60, color: Colors.red),
-              const SizedBox(height: 10),
+              Icon(
+                isNetworkError ? Icons.wifi_off_rounded : Icons.warning_amber_rounded,
+                size: 72,
+                color: isNetworkError ? Colors.grey : Colors.amber,
+              ),
+              const SizedBox(height: 16),
               Text(
                 _errorMessage,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Pastikan koneksi internet Anda stabil, lalu silakan coba cari kembali.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 12,
                 ),
               ),
             ],
@@ -233,11 +251,36 @@ class _SearchScreenState extends State<SearchScreen> {
 
     if (_results.isEmpty) {
       return Center(
-        child: Text(
-          'Tidak ada ayat yang cocok ditemukan.',
-          style: GoogleFonts.poppins(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            fontSize: 14,
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search_off_rounded,
+                size: 72,
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.15),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Kata kunci "$_lastQuery" tidak ditemukan',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Silakan periksa kembali ejaan kata kunci Anda atau coba gunakan padanan kata lainnya.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 13,
+                ),
+              ),
+            ],
           ),
         ),
       );

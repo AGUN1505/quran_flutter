@@ -40,12 +40,30 @@ class SurahController extends ChangeNotifier {
   }
 
   void filterSearch(String query) {
-    _filteredSurah = _allSurah
-        .where((surah) =>
-            surah.namaLatin.toLowerCase().contains(query.toLowerCase()) ||
-            surah.arti.toLowerCase().contains(query.toLowerCase()) ||
-            surah.nomor.toString() == query)
-        .toList();
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) {
+      _filteredSurah = _allSurah;
+      notifyListeners();
+      return;
+    }
+
+    // Helper to normalize strings for flexible "LIKE" substring matching
+    String normalize(String input) {
+      return input.toLowerCase().replaceAll(RegExp(r"[^a-zA-Z0-9]"), "");
+    }
+
+    final normalizedQuery = normalize(trimmed);
+
+    _filteredSurah = _allSurah.where((surah) {
+      final normalizedNama = normalize(surah.namaLatin);
+      final normalizedArti = normalize(surah.arti);
+      final numberStr = surah.nomor.toString();
+
+      return normalizedNama.contains(normalizedQuery) ||
+          normalizedArti.contains(normalizedQuery) ||
+          numberStr == trimmed;
+    }).toList();
+
     notifyListeners();
   }
 }

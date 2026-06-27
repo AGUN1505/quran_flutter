@@ -52,7 +52,7 @@ class JuzTab extends StatelessWidget {
       builder: (context, child) {
         if (_controller.isLoading) {
           return ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 150),
             itemCount: 6,
             itemBuilder: (context, index) {
               return Container(
@@ -89,7 +89,7 @@ class JuzTab extends StatelessWidget {
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 150),
           itemCount: _juzList.length,
           itemBuilder: (context, index) {
             final juz = _juzList[index];

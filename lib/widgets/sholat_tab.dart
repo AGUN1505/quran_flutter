@@ -17,7 +17,7 @@ class SholatTab extends StatelessWidget {
       builder: (context, child) {
         if (_prayerTimesController.isLoading) {
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 150),
             children: [
               // Dropdown card skeleton
               Container(
@@ -100,7 +100,7 @@ class SholatTab extends StatelessWidget {
         if (timings == null) return const SizedBox.shrink();
 
         return ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 150),
           children: [
             // Province & City Selector Card
             Container(

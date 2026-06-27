@@ -81,7 +81,7 @@ class _SuratTabState extends State<SuratTab> {
             builder: (context, child) {
               if (_controller.isLoading) {
                 return ListView.builder(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 150),
                   itemCount: 8,
                   itemBuilder: (context, index) {
                     return Container(
@@ -164,7 +164,7 @@ class _SuratTabState extends State<SuratTab> {
               }
 
               return ListView.builder(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 150),
                 itemCount: _controller.filteredSurah.length,
                 itemBuilder: (context, index) {
                   final surah = _controller.filteredSurah[index];

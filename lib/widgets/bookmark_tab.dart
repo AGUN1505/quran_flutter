@@ -10,6 +10,91 @@ class BookmarkTab extends StatelessWidget {
   final BookmarkController _bookmarkController = BookmarkController();
   final SurahController _surahController = SurahController();
 
+  void _showDeleteConfirmation(BuildContext context, String surahName, int surahNo, int ayahNo) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final themeColor = Theme.of(context).primaryColor;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+
+        return AlertDialog(
+          backgroundColor: Theme.of(context).cardColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.amber,
+                size: 28,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                'Hapus Bookmark?',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'Apakah Anda yakin ingin menghapus bookmark untuk QS. $surahName Ayat $ayahNo?',
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+          actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'Batal',
+                style: GoogleFonts.poppins(
+                  color: isDark ? Colors.white70 : Colors.black54,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _bookmarkController.toggleBookmark(surahNo, surahName, ayahNo);
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Bookmark QS. $surahName Ayat $ayahNo berhasil dihapus',
+                      style: GoogleFonts.poppins(),
+                    ),
+                    backgroundColor: themeColor,
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                'Hapus',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;
@@ -43,7 +128,7 @@ class BookmarkTab extends StatelessWidget {
         }
 
         return ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 150),
           itemCount: bookmarks.length,
           itemBuilder: (context, index) {
             final b = bookmarks[index];
@@ -91,13 +176,7 @@ class BookmarkTab extends StatelessWidget {
                 ),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.red),
-                  onPressed: () {
-                    _bookmarkController.toggleBookmark(
-                      b.surahNo,
-                      b.surahName,
-                      b.ayahNo,
-                    );
-                  },
+                  onPressed: () => _showDeleteConfirmation(context, b.surahName, b.surahNo, b.ayahNo),
                 ),
                 onTap: () {
                   try {

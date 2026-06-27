@@ -39,7 +39,8 @@ class SearchService {
       final encodedKeyword = Uri.encodeComponent(keyword);
       final response = await http.get(
         Uri.parse('$baseUrl/search/$encodedKeyword/all/id.indonesian'),
-      );
+      ).timeout(const Duration(seconds: 15));
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['code'] == 200) {
@@ -48,10 +49,22 @@ class SearchService {
               .map((m) => SearchMatch.fromJson(m as Map<String, dynamic>))
               .toList();
         }
+      } else if (response.statusCode == 404) {
+        // HTTP 404 means no matches found in Al-Quran Cloud API
+        return [];
       }
-      throw Exception('Gagal melakukan pencarian: ${response.statusCode}');
+      throw Exception('Server merespon dengan kode ${response.statusCode}');
+    } on http.ClientException {
+      throw Exception('Tidak dapat terhubung ke server. Silakan periksa koneksi internet Anda.');
     } catch (e) {
-      throw Exception('Gagal terhubung ke server pencarian: $e');
+      final errStr = e.toString();
+      if (errStr.contains('SocketException') || errStr.contains('Network') || errStr.contains('connect')) {
+        throw Exception('Koneksi internet tidak tersedia. Silakan hubungkan perangkat Anda ke internet.');
+      }
+      if (errStr.contains('TimeoutException')) {
+        throw Exception('Waktu koneksi habis. Silakan coba beberapa saat lagi.');
+      }
+      throw Exception('Terjadi kesalahan saat mencari: $e');
     }
   }
 }
