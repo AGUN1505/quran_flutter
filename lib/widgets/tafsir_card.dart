@@ -17,7 +17,7 @@ class TafsirCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -66,7 +66,7 @@ class TafsirCard extends StatelessWidget {
               textAlign: TextAlign.justify,
               style: GoogleFonts.poppins(
                 fontSize: 13,
-                color: Colors.grey[800],
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.6,
               ),
             ),

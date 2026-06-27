@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final accentColor = Theme.of(context).colorScheme.secondary;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAF7),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Search Bar
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(15),
                       boxShadow: [
                         BoxShadow(
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           margin: const EdgeInsets.only(bottom: 12),
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Row(

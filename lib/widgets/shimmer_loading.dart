@@ -39,6 +39,19 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colors = isDark
+        ? const [
+            Color(0xFF2C2C2C),
+            Color(0xFF3A3A3A),
+            Color(0xFF2C2C2C),
+          ]
+        : const [
+            Color(0xFFEBEBEB),
+            Color(0xFFF4F4F4),
+            Color(0xFFEBEBEB),
+          ];
+
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
@@ -50,11 +63,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: const [
-                Color(0xFFEBEBEB),
-                Color(0xFFF4F4F4),
-                Color(0xFFEBEBEB),
-              ],
+              colors: colors,
               stops: const [0.0, 0.5, 1.0],
               transform: _SlidingGradientTransform(slidePercent: _animation.value),
             ),

@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             children: [
               // Theme Section Header
-              _buildSectionHeader('Tampilan'),
+              _buildSectionHeader(context, 'Tampilan'),
 
               // Theme Option Card
               Card(
@@ -62,7 +62,7 @@ class SettingsScreen extends StatelessWidget {
                     'Ubah tema aplikasi menjadi gelap',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                   value: isDark,
@@ -73,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: 24),
 
               // Font Size Section Header
-              _buildSectionHeader('Ukuran Font Arab'),
+              _buildSectionHeader(context, 'Ukuran Font Arab'),
 
               // Arabic Font Size Card
               Card(
@@ -144,7 +144,7 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: 24),
 
               // Latin/Translation Font Size Section Header
-              _buildSectionHeader('Ukuran Font Terjemahan & Latin'),
+              _buildSectionHeader(context, 'Ukuran Font Terjemahan & Latin'),
 
               // Translation Font Size Card
               Card(
@@ -215,7 +215,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(left: 4.0, bottom: 8.0),
       child: Text(
@@ -223,7 +223,7 @@ class SettingsScreen extends StatelessWidget {
         style: GoogleFonts.poppins(
           fontWeight: FontWeight.bold,
           fontSize: 13,
-          color: Colors.grey[700],
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
           letterSpacing: 0.5,
         ),
       ),

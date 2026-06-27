@@ -59,7 +59,7 @@ class _DetailScreenState extends State<DetailScreen> {
     final themeColor = Theme.of(context).primaryColor;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAF7),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: themeColor,
         elevation: 0,

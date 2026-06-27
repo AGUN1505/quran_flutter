@@ -19,7 +19,7 @@ class SurahCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -57,14 +57,14 @@ class SurahCard extends StatelessWidget {
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             fontSize: 16,
-            color: Colors.black87,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         subtitle: Text(
           '${surah.arti} • ${surah.jumlahAyat} Ayat',
           style: GoogleFonts.poppins(
             fontSize: 12,
-            color: Colors.grey[600],
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
         trailing: Text(
