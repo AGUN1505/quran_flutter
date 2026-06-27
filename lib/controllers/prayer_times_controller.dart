@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/prayer_times_service.dart';
+import '../services/notification_service.dart';
+import 'notification_settings_controller.dart';
 
 class PrayerTimesController extends ChangeNotifier {
   static final PrayerTimesController _instance = PrayerTimesController._internal();
@@ -87,6 +89,11 @@ class PrayerTimesController extends ChangeNotifier {
         day: now.day,
       );
       _isLoading = false;
+      // Jadwalkan ulang notifikasi berdasarkan jadwal terbaru
+      await NotificationService.schedulePrayerNotifications(
+        _timings!,
+        NotificationSettingsController(),
+      );
     } catch (e) {
       _errorMessage = e.toString().replaceAll('Exception: ', '');
       _isLoading = false;

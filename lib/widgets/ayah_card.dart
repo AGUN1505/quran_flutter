@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/surah.dart';
 import '../controllers/settings_controller.dart';
 import '../controllers/bookmark_controller.dart';
+import 'islamic_star_ornament.dart';
 
 class AyahCard extends StatelessWidget {
   final Ayat ayat;
@@ -72,23 +73,9 @@ class AyahCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Star Verse Number
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: accentColor.withValues(alpha: 0.25),
-                              size: 40,
-                            ),
-                            Text(
-                              ayat.nomorAyat.toString(),
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                color: themeColor,
-                                fontSize: 11,
-                              ),
-                            ),
-                          ],
+                        IslamicStarOrnament(
+                          number: ayat.nomorAyat.toString(),
+                          color: accentColor,
                         ),
                         // Actions
                         Row(

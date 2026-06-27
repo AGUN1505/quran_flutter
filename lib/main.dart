@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'controllers/settings_controller.dart';
 import 'screens/splash_screen.dart';
+import 'services/notification_service.dart';
 
-void main() {
-  // Ensure widget binding is initialized for SharedPreferences
+void main() async {
+  // Ensure widget binding is initialized for SharedPreferences and notifications
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize local notifications and timezone data
+  await NotificationService.initialize();
   runApp(const QuranApp());
 }
 

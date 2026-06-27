@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/surah.dart';
+import 'islamic_star_ornament.dart';
 
 class SurahCard extends StatelessWidget {
   final Surah surah;
@@ -44,23 +45,9 @@ class SurahCard extends StatelessWidget {
             child: Row(
               children: [
                 // Star Number Ornament
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: accentColor.withValues(alpha: 0.35),
-                      size: 44,
-                    ),
-                    Text(
-                      surah.nomor.toString(),
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                IslamicStarOrnament(
+                  number: surah.nomor.toString(),
+                  color: accentColor,
                 ),
                 const SizedBox(width: 16),
                 // Surah Meta Info
