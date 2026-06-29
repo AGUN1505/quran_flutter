@@ -8,6 +8,7 @@ import '../widgets/surat_tab.dart';
 import '../widgets/juz_tab.dart';
 import '../widgets/bookmark_tab.dart';
 import '../widgets/sholat_tab.dart';
+import '../widgets/qiblah_compass_tab.dart';
 import 'settings_screen.dart';
 import 'search_screen.dart';
 
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     JuzTab(),
     BookmarkTab(),
     SholatTab(),
+    const QiblahCompassTab(),
   ];
 
   @override
@@ -201,7 +203,7 @@ class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with Single
       _isDragging = true;
       // Usable width is 324 (starts at 8.0, ends at 332.0 for container of width 340)
       final double x = (localX - 8.0).clamp(0.0, 324.0);
-      _dragIndex = (x / 324.0) * 3.0;
+      _dragIndex = (x / 324.0) * 4.0;
       _targetIndex = _dragIndex!;
     });
   }
@@ -257,6 +259,11 @@ class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with Single
         'icon': Icons.mosque_outlined,
         'activeIcon': Icons.mosque,
         'label': 'Sholat',
+      },
+      {
+        'icon': Icons.explore_outlined,
+        'activeIcon': Icons.explore,
+        'label': 'Kiblat',
       },
     ];
 
@@ -331,8 +338,8 @@ class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with Single
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final double totalWidth = constraints.maxWidth;
-                  final double itemWidth = totalWidth / 4;
-                  const double bubbleWidth = 76.0;
+                  final double itemWidth = totalWidth / 5;
+                  const double bubbleWidth = 58.0;
                   
                   // Normal height 46, expands up to 72 (exceeding 68)
                   const double normalHeight = 46.0;
