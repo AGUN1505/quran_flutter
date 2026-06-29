@@ -4,6 +4,7 @@ import '../controllers/settings_controller.dart';
 import '../controllers/notification_settings_controller.dart';
 import '../services/notification_service.dart';
 
+// Halaman pengaturan aplikasi untuk mengonfigurasi tema, ukuran font teks, dan notifikasi sholat
 class SettingsScreen extends StatelessWidget {
   final SettingsController settingsController;
 
@@ -12,6 +13,7 @@ class SettingsScreen extends StatelessWidget {
     required this.settingsController,
   });
 
+  // Membangun antarmuka pengaturan dengan switch tema, slider ukuran teks, dan pengaturan adzan
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;
@@ -455,6 +457,7 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
+  // Widget pembantu untuk membangun item tile switch waktu sholat individu
   Widget _buildPrayerTile({
     required BuildContext context,
     required String icon,
@@ -476,8 +479,10 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  // Widget pembantu untuk membangun garis pembatas antar item menu
   Widget _buildDivider() => const Divider(height: 1, indent: 56, endIndent: 16);
 
+  // Widget pembantu untuk membangun judul bagian menu pengaturan
   Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(left: 4.0, bottom: 8.0),
@@ -494,7 +499,7 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-/// Helper class to hold a reference to the prayer timings for instant reschedule
+/// Kelas pembantu internal untuk menyimpan referensi global instansi PrayerTimesController
 class _PrayerTimesControllerRef {
   static dynamic _instance;
 }

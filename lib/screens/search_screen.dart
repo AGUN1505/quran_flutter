@@ -5,6 +5,7 @@ import '../controllers/surah_controller.dart';
 import '../widgets/shimmer_loading.dart';
 import 'detail_screen.dart';
 
+// Halaman pencarian terjemahan global Al-Quran berdasarkan kata kunci
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -12,6 +13,7 @@ class SearchScreen extends StatefulWidget {
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
+// State untuk SearchScreen yang mengelola kata kunci, status loading, dan daftar hasil pencocokan
 class _SearchScreenState extends State<SearchScreen> {
   final SearchService _searchService = SearchService();
   final TextEditingController _queryController = TextEditingController();
@@ -20,6 +22,7 @@ class _SearchScreenState extends State<SearchScreen> {
   String _errorMessage = '';
   String _lastQuery = '';
 
+  // Melakukan request pencarian ke SearchService dan mengelola pembaruan state hasil/error
   Future<void> _performSearch(String query) async {
     final trimmed = query.trim();
     if (trimmed.isEmpty) return;
@@ -45,6 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  // Membuat sorotan visual (highlighting) pada teks terjemahan yang cocok dengan kata kunci pencarian
   Widget _highlightText(String text, String query) {
     if (query.isEmpty) {
       return Text(
@@ -155,6 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  // Membangun body tampilan yang dinamis: indikator loading, pesan error, pencarian kosong, atau daftar hasil pencarian
   Widget _buildBody() {
     final loadingCardColor = Theme.of(context).cardColor;
 

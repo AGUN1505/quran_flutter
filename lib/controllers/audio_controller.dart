@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+// Controller singleton untuk mengelola status dan kontrol pemutaran audio Murottal
 class AudioController extends ChangeNotifier {
   static final AudioController _instance = AudioController._internal();
 
@@ -21,6 +22,7 @@ class AudioController extends ChangeNotifier {
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
 
+  // Konstruktor internal untuk inisialisasi pendengar event pemutar audio
   AudioController._internal() {
     _audioPlayer.onPlayerStateChanged.listen((state) {
       if (state == PlayerState.completed || state == PlayerState.stopped) {
@@ -57,6 +59,7 @@ class AudioController extends ChangeNotifier {
   Duration get duration => _duration;
   Duration get position => _position;
 
+  // Memutar audio murottal untuk ayat tertentu dari URL streaming
   Future<void> playAyah({
     required String url,
     required int index,
@@ -91,6 +94,7 @@ class AudioController extends ChangeNotifier {
     }
   }
 
+  // Memutar audio murottal satu surat penuh dari URL streaming
   Future<void> playSurahFull({
     required String url,
     required int surahNo,
@@ -123,6 +127,7 @@ class AudioController extends ChangeNotifier {
     }
   }
 
+  // Melakukan pause atau resume pada pemutaran audio yang sedang aktif
   Future<void> togglePlayPause() async {
     if (_audioPlayer.state == PlayerState.playing) {
       await _audioPlayer.pause();
@@ -134,6 +139,7 @@ class AudioController extends ChangeNotifier {
 
   bool get isPlaying => _audioPlayer.state == PlayerState.playing;
 
+  // Menghentikan pemutaran audio secara total dan mereset status controller
   Future<void> stop() async {
     await _audioPlayer.stop();
     _playingAyahIndex = null;
@@ -144,6 +150,7 @@ class AudioController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Memindahkan posisi pemutaran audio ke durasi tertentu
   Future<void> seek(Duration position) async {
     await _audioPlayer.seek(position);
     notifyListeners();

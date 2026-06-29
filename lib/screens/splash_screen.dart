@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 
+// Halaman pembuka aplikasi (Splash Screen) dengan animasi sederhana
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -9,6 +10,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
+// State untuk SplashScreen yang mengelola transisi otomatis ke halaman utama
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
@@ -16,6 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _navigateToHome();
   }
 
+  // Melakukan penundaan selama 3 detik sebelum mengarahkan ke halaman utama (HomeScreen)
   Future<void> _navigateToHome() async {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
@@ -25,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  // Membangun tampilan Splash Screen dengan logo buku Islami, judul, dan progress indicator
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

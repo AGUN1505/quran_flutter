@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// Controller singleton untuk mengelola pengaturan umum aplikasi (tema dan ukuran font teks)
 class SettingsController extends ChangeNotifier {
   static final SettingsController _instance = SettingsController._internal();
 
@@ -8,6 +9,7 @@ class SettingsController extends ChangeNotifier {
     return _instance;
   }
 
+  // Inisialisasi awal controller dan memuat preferensi pengguna dari penyimpanan
   SettingsController._internal() {
     _loadSettings();
   }
@@ -26,6 +28,7 @@ class SettingsController extends ChangeNotifier {
 
   bool get isDarkMode => _themeMode == ThemeMode.dark;
 
+  // Memuat pengaturan tema dan ukuran font dari SharedPreferences lokal
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     final themeIndex = prefs.getInt(_keyThemeMode) ?? 0;
@@ -35,6 +38,7 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Mengubah dan menyimpan jenis tema aplikasi (terang/gelap/sistem) ke penyimpanan lokal
   Future<void> setThemeMode(ThemeMode mode) async {
     _themeMode = mode;
     notifyListeners();
@@ -42,6 +46,7 @@ class SettingsController extends ChangeNotifier {
     await prefs.setInt(_keyThemeMode, mode.index);
   }
 
+  // Mengubah dan menyimpan ukuran font teks Arab ke penyimpanan lokal
   Future<void> setArabicFontSize(double size) async {
     _arabicFontSize = size;
     notifyListeners();
@@ -49,6 +54,7 @@ class SettingsController extends ChangeNotifier {
     await prefs.setDouble(_keyArabicFontSize, size);
   }
 
+  // Mengubah dan menyimpan ukuran font teks terjemahan ke penyimpanan lokal
   Future<void> setTranslationFontSize(double size) async {
     _translationFontSize = size;
     notifyListeners();
@@ -56,6 +62,7 @@ class SettingsController extends ChangeNotifier {
     await prefs.setDouble(_keyTranslationFontSize, size);
   }
 
+  // Mengubah tema aplikasi secara toggle cepat antara terang dan gelap
   Future<void> toggleTheme(bool isDark) async {
     await setThemeMode(isDark ? ThemeMode.dark : ThemeMode.light);
   }

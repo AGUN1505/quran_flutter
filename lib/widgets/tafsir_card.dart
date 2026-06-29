@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/surah.dart';
 
+// Widget kartu untuk menampilkan penjelasan konten tafsir per ayat
 class TafsirCard extends StatelessWidget {
   final TafsirItem item;
 
@@ -10,6 +11,7 @@ class TafsirCard extends StatelessWidget {
     required this.item,
   });
 
+  // Membangun tampilan visual kartu tafsir dengan tajuk nomor ayat dan isi teks tafsir
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Widget untuk menampilkan efek kerangka memuat data (shimmer skeleton loading effect)
 class ShimmerLoading extends StatefulWidget {
   final double width;
   final double height;
@@ -16,11 +17,13 @@ class ShimmerLoading extends StatefulWidget {
   State<ShimmerLoading> createState() => _ShimmerLoadingState();
 }
 
+// State untuk ShimmerLoading yang mengelola kontrol siklus hidup animasi transisi gradien geser
 class _ShimmerLoadingState extends State<ShimmerLoading>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
+  // Menginisialisasi controller dan tween animasi perulangan transisi geser gradien
   @override
   void initState() {
     super.initState();
@@ -31,12 +34,14 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
     _animation = Tween<double>(begin: -2.0, end: 2.0).animate(_controller);
   }
 
+  // Membersihkan resource controller animasi shimmer saat widget dibuang
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
+  // Membangun tampilan kontainer gradien linear abu-abu yang bergeser secara dinamis
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -74,6 +79,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
   }
 }
 
+// Kelas pembantu internal untuk menggeser matriks posisi gradien linear linear secara horizontal
 class _SlidingGradientTransform extends GradientTransform {
   const _SlidingGradientTransform({
     required this.slidePercent,
@@ -81,6 +87,7 @@ class _SlidingGradientTransform extends GradientTransform {
 
   final double slidePercent;
 
+  // Menghitung matriks transformasi pergeseran gradien linear berdasarkan presentasi geser
   @override
   Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {
     return Matrix4.translationValues(bounds.width * slidePercent, 0.0, 0.0);

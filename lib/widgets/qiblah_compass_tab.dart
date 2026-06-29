@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 
+// Widget Tab untuk menampilkan kompas arah kiblat interaktif berdasarkan lokasi GPS dan sensor perangkat
 class QiblahCompassTab extends StatefulWidget {
   const QiblahCompassTab({super.key});
 
@@ -13,6 +14,7 @@ class QiblahCompassTab extends StatefulWidget {
   State<QiblahCompassTab> createState() => _QiblahCompassTabState();
 }
 
+// State untuk QiblahCompassTab yang memproses perolehan lokasi GPS, perhitungan sudut Ka'bah, dan sensor magnetometer kompas
 class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerProviderStateMixin {
   bool _isLoading = true;
   String _errorMessage = '';
@@ -25,6 +27,7 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
 
   late final AnimationController _glowController;
 
+  // Menginisialisasi controller animasi pendaran dan memulai kalkulasi parameter lokasi
   @override
   void initState() {
     super.initState();
@@ -36,12 +39,14 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
     _initLocationAndQiblah();
   }
 
+  // Membersihkan resource controller animasi pendaran saat widget dibuang
   @override
   void dispose() {
     _glowController.dispose();
     super.dispose();
   }
 
+  // Memeriksa izin akses lokasi, mendeteksi koordinat GPS, dan menghitung bearing arah kiblat serta jarak Ka'bah
   Future<void> _initLocationAndQiblah() async {
     setState(() {
       _isLoading = true;
@@ -107,6 +112,7 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
     }
   }
 
+  // Menghitung arah sudut kiblat menggunakan rumus bola trigonometri besar berdasarkan garis lintang dan bujur
   double _calculateQiblahBearing(double lat, double lng) {
     final double userLatRad = lat * math.pi / 180.0;
     final double userLngRad = lng * math.pi / 180.0;
@@ -125,6 +131,7 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
     return (bearingDeg + 360.0) % 360.0;
   }
 
+  // Membangun antarmuka tampilan kompas kiblat interaktif beserta indikasi kecocokan sudut arah
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -448,6 +455,7 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
     );
   }
 
+  // Widget pembantu untuk menggambar dial bulat kompas dengan garis silang derajat
   Widget _buildCompassDial(double size, bool isDark, Color themeColor) {
     return Container(
       width: size,
@@ -498,6 +506,7 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
     );
   }
 
+  // Widget pembantu untuk meletakkan teks arah mata angin (U, S, T, B) di tepian dial kompas
   Widget _buildDirectionText(String text, double angleDegrees, double size, Color color) {
     final double angleRad = angleDegrees * math.pi / 180.0;
     final double radius = size * 0.40;
@@ -517,6 +526,7 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
     );
   }
 
+  // Widget pembantu untuk membangun jarum penunjuk arah kiblat yang menunjuk ke lambang Ka'bah
   Widget _buildQiblahPointer(double size, double qiblahAngleRad, bool isPointing, Color themeColor) {
     // Needle size
     final double needleLength = size * 0.32;
@@ -592,6 +602,7 @@ class _QiblahCompassTabState extends State<QiblahCompassTab> with SingleTickerPr
     );
   }
 
+  // Widget pembantu untuk menampilkan item kotak detail (jarak ke Ka'bah atau derajat sudut kiblat)
   Widget _buildDetailItem(BuildContext context, String title, String value, IconData icon, Color themeColor) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(

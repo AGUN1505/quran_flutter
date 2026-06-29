@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/surah.dart';
 
+// Service API Client untuk mengambil data Al-Quran, detail ayat, dan tafsir dari equran.id
 class QuranApiService {
   static const String baseUrl = 'https://equran.id/api/v2';
 
+  // Mengambil daftar 114 surat Al-Quran lengkap dengan deskripsi singkat
   Future<List<Surah>> getSurahList() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/surat'));
@@ -21,6 +23,7 @@ class QuranApiService {
     }
   }
 
+  // Mengambil data detail ayat-ayat suatu surat berdasarkan nomor suratnya
   Future<SurahDetail> getSurahDetail(int nomor) async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/surat/$nomor'));
@@ -36,6 +39,7 @@ class QuranApiService {
     }
   }
 
+  // Mengambil data penjelasan tafsir lengkap suatu surat berdasarkan nomor suratnya
   Future<TafsirDetail> getTafsir(int nomor) async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/tafsir/$nomor'));

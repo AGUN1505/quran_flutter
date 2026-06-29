@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Widget dekoratif berupa ornamen bintang segi delapan Islami untuk membungkus nomor ayat/surat
 class IslamicStarOrnament extends StatelessWidget {
   final String number;
   final Color color;
@@ -11,6 +12,7 @@ class IslamicStarOrnament extends StatelessWidget {
     required this.color,
   });
 
+  // Membangun ornamen tumpukan dua persegi yang diputar (segi delapan) dengan nomor di tengahnya
   @override
   Widget build(BuildContext context) {
     return Stack(

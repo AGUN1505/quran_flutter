@@ -6,6 +6,7 @@ import '../widgets/shimmer_loading.dart';
 import '../widgets/last_read_banner.dart';
 import '../screens/detail_screen.dart';
 
+// Widget Tab untuk menampilkan daftar surat lengkap (1-114) dan bilah pencarian lokal
 class SuratTab extends StatefulWidget {
   const SuratTab({super.key});
 
@@ -13,10 +14,12 @@ class SuratTab extends StatefulWidget {
   State<SuratTab> createState() => _SuratTabState();
 }
 
+// State untuk SuratTab yang menangani pencarian lokal dan pemuatan awal daftar surat
 class _SuratTabState extends State<SuratTab> {
   final SurahController _controller = SurahController();
   final TextEditingController _searchController = TextEditingController();
 
+  // Menginisialisasi state dan memicu penarikan data surat jika daftar lokal kosong
   @override
   void initState() {
     super.initState();
@@ -25,12 +28,14 @@ class _SuratTabState extends State<SuratTab> {
     }
   }
 
+  // Membersihkan resource TextEditingController saat widget dibuang
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
 
+  // Membangun tampilan tab surat dengan banner riwayat bacaan, kolom pencarian, dan daftar surat
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

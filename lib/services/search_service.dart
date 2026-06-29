@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+// Model data untuk merepresentasikan satu hasil pencocokan ayat dalam pencarian global
 class SearchMatch {
   final int number;
   final String text;
@@ -18,6 +19,7 @@ class SearchMatch {
     required this.numberInSurah,
   });
 
+  // Membuat objek SearchMatch dari data JSON API Al-Quran Cloud
   factory SearchMatch.fromJson(Map<String, dynamic> json) {
     final surahMap = json['surah'] as Map<String, dynamic>;
     return SearchMatch(
@@ -31,9 +33,11 @@ class SearchMatch {
   }
 }
 
+// Service API Client untuk mencari kata kunci terjemahan Al-Quran secara global
 class SearchService {
   static const String baseUrl = 'https://api.alquran.cloud/v1';
 
+  // Mengirim request pencarian kata kunci terjemahan bahasa Indonesia ke server API alquran.cloud
   Future<List<SearchMatch>> searchAyah(String keyword) async {
     try {
       final encodedKeyword = Uri.encodeComponent(keyword);

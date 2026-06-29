@@ -6,6 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../services/prayer_times_service.dart';
 import '../controllers/notification_settings_controller.dart';
 
+// Service untuk mengelola inisialisasi, perizinan, dan penjadwalan notifikasi waktu sholat (adzan) secara lokal
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -44,6 +45,7 @@ class NotificationService {
     }
   }
 
+  // Callback internal yang dipicu ketika pengguna mengetuk notifikasi yang muncul
   static void _onNotificationTapped(NotificationResponse response) {
     if (kDebugMode) debugPrint('Notification tapped: ${response.payload}');
   }
@@ -64,7 +66,7 @@ class NotificationService {
     try {
       final androidPlugin = _plugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+               AndroidFlutterLocalNotificationsPlugin>();
       if (androidPlugin == null) return;
 
       AndroidNotificationSound? notifSound;

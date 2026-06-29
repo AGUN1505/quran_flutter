@@ -5,6 +5,7 @@ import '../controllers/settings_controller.dart';
 import '../controllers/bookmark_controller.dart';
 import 'islamic_star_ornament.dart';
 
+// Widget kartu untuk menampilkan informasi ayat lengkap (Arab, Latin, terjemahan, bookmark, dan audio)
 class AyahCard extends StatelessWidget {
   final Ayat ayat;
   final bool isPlaying;
@@ -21,6 +22,7 @@ class AyahCard extends StatelessWidget {
     required this.surahName,
   });
 
+  // Membangun tampilan kartu ayat dengan respons dinamis terhadap kontrol tema dan bookmark
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

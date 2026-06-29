@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/surah.dart';
 import '../services/quran_api_service.dart';
 
+// Controller singleton untuk mengambil daftar surat dari API dan mengelola pencarian surat
 class SurahController extends ChangeNotifier {
   static final SurahController _instance = SurahController._internal();
 
@@ -22,6 +23,7 @@ class SurahController extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
+  // Mengambil daftar surat Al-Quran dari server API
   Future<void> fetchSurahList() async {
     _isLoading = true;
     _errorMessage = '';
@@ -39,6 +41,7 @@ class SurahController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Menyaring daftar surat berdasarkan kata kunci pencarian (nama surat, makna arti, atau nomor)
   void filterSearch(String query) {
     final trimmed = query.trim();
     if (trimmed.isEmpty) {
@@ -47,7 +50,7 @@ class SurahController extends ChangeNotifier {
       return;
     }
 
-    // Helper to normalize strings for flexible "LIKE" substring matching
+    // Helper untuk menormalisasi string pencarian dengan menghapus simbol non-alfanumerik
     String normalize(String input) {
       return input.toLowerCase().replaceAll(RegExp(r"[^a-zA-Z0-9]"), "");
     }

@@ -4,12 +4,14 @@ import '../controllers/bookmark_controller.dart';
 import '../controllers/surah_controller.dart';
 import '../screens/detail_screen.dart';
 
+// Panel Tab untuk menampilkan daftar ayat-ayat Al-Quran yang telah di-bookmark oleh pengguna
 class BookmarkTab extends StatelessWidget {
   BookmarkTab({super.key});
 
   final BookmarkController _bookmarkController = BookmarkController();
   final SurahController _surahController = SurahController();
 
+  // Menampilkan dialog konfirmasi sebelum menghapus ayat dari daftar bookmark
   void _showDeleteConfirmation(BuildContext context, String surahName, int surahNo, int ayahNo) {
     showDialog(
       context: context,
@@ -95,6 +97,7 @@ class BookmarkTab extends StatelessWidget {
     );
   }
 
+  // Membangun tampilan daftar bookmark atau pesan kosong jika tidak ada bookmark
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

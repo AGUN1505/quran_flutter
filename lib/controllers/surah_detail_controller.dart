@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/surah.dart';
 import '../services/quran_api_service.dart';
 
+// Controller untuk mengelola pengambilan data ayat detail dari satu surat tertentu
 class SurahDetailController extends ChangeNotifier {
   final QuranApiService _apiService = QuranApiService();
   SurahDetail? _surahDetail;
@@ -12,6 +13,7 @@ class SurahDetailController extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
+  // Mengambil detail surat dan ayat-ayatnya berdasarkan nomor surat
   Future<void> fetchDetail(int nomor) async {
     _isLoading = true;
     _errorMessage = '';

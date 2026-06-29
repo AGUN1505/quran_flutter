@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../controllers/audio_controller.dart';
 
+// Widget pemutar audio murottal yang persisten melayang di bagian bawah layar
 class PersistentAudioPlayer extends StatelessWidget {
   const PersistentAudioPlayer({super.key});
 
+  // Membangun tampilan pemutar audio melayang secara dinamis berdasarkan state aktif dari AudioController
   @override
   Widget build(BuildContext context) {
     final audioController = AudioController();

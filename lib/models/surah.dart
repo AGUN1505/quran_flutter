@@ -1,3 +1,4 @@
+// Model data untuk merepresentasikan informasi singkat sebuah Surat
 class Surah {
   final int nomor;
   final String nama;
@@ -19,6 +20,7 @@ class Surah {
     required this.audioUrl,
   });
 
+  // Membuat instance Surah dari objek JSON API
   factory Surah.fromJson(Map<String, dynamic> json) {
     // Get first audio url or fallback
     Map<String, dynamic> audioMap = json['audioFull'] ?? {};
@@ -37,6 +39,7 @@ class Surah {
   }
 }
 
+// Model data untuk merepresentasikan detail satu Ayat Al-Quran
 class Ayat {
   final int nomorAyat;
   final String teksArab;
@@ -52,6 +55,7 @@ class Ayat {
     required this.audioUrl,
   });
 
+  // Membuat instance Ayat dari objek JSON API
   factory Ayat.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> audioMap = json['audio'] ?? {};
     String audio = audioMap.values.isNotEmpty ? audioMap.values.first : '';
@@ -66,6 +70,7 @@ class Ayat {
   }
 }
 
+// Model data untuk merepresentasikan detail lengkap sebuah Surat beserta daftar ayatnya
 class SurahDetail {
   final int nomor;
   final String nama;
@@ -87,6 +92,7 @@ class SurahDetail {
     required this.ayat,
   });
 
+  // Membuat instance SurahDetail dari objek JSON API
   factory SurahDetail.fromJson(Map<String, dynamic> json) {
     var ayatList = json['ayat'] as List? ?? [];
     List<Ayat> ayatObjects = ayatList.map((a) => Ayat.fromJson(a)).toList();
@@ -104,6 +110,7 @@ class SurahDetail {
   }
 }
 
+// Model data untuk merepresentasikan satu item Tafsir Ayat
 class TafsirItem {
   final int ayat;
   final String teks;
@@ -113,6 +120,7 @@ class TafsirItem {
     required this.teks,
   });
 
+  // Membuat instance TafsirItem dari objek JSON API
   factory TafsirItem.fromJson(Map<String, dynamic> json) {
     return TafsirItem(
       ayat: json['ayat'],
@@ -121,6 +129,7 @@ class TafsirItem {
   }
 }
 
+// Model data untuk merepresentasikan kumpulan Tafsir dari satu Surat penuh
 class TafsirDetail {
   final int nomor;
   final String nama;
@@ -134,6 +143,7 @@ class TafsirDetail {
     required this.tafsir,
   });
 
+  // Membuat instance TafsirDetail dari objek JSON API
   factory TafsirDetail.fromJson(Map<String, dynamic> json) {
     var tafsirList = json['tafsir'] as List? ?? [];
     List<TafsirItem> tafsirObjects = tafsirList.map((t) => TafsirItem.fromJson(t)).toList();

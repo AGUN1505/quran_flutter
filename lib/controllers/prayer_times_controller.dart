@@ -4,6 +4,7 @@ import '../services/prayer_times_service.dart';
 import '../services/notification_service.dart';
 import 'notification_settings_controller.dart';
 
+// Controller singleton untuk mengelola pemilihan wilayah dan jadwal waktu sholat
 class PrayerTimesController extends ChangeNotifier {
   static final PrayerTimesController _instance = PrayerTimesController._internal();
 
@@ -11,6 +12,7 @@ class PrayerTimesController extends ChangeNotifier {
     return _instance;
   }
 
+  // Inisialisasi awal controller dan memuat wilayah terpilih sebelumnya dari penyimpanan
   PrayerTimesController._internal() {
     _loadSavedSelectionAndFetch();
   }
@@ -35,6 +37,7 @@ class PrayerTimesController extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
+  // Memuat daftar provinsi, kota/kabupaten terpilih, lalu mengambil jadwal sholat terkait
   Future<void> _loadSavedSelectionAndFetch() async {
     _isLoading = true;
     _errorMessage = '';
@@ -74,6 +77,7 @@ class PrayerTimesController extends ChangeNotifier {
     }
   }
 
+  // Mengambil jadwal sholat aktual hari ini dari server dan menjadwalkan notifikasi adzan lokal
   Future<void> fetchPrayerTimes() async {
     _isLoading = true;
     _errorMessage = '';
@@ -101,6 +105,7 @@ class PrayerTimesController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Mengubah provinsi aktif, mengambil ulang daftar kabupaten/kota, dan memperbarui jadwal sholat
   Future<void> setProvince(String province) async {
     if (!_provinces.contains(province)) return;
     _selectedProvince = province;
@@ -128,6 +133,7 @@ class PrayerTimesController extends ChangeNotifier {
     }
   }
 
+  // Mengubah kabupaten/kota aktif dan memperbarui jadwal sholat terkait
   Future<void> setCity(String city) async {
     if (!_cities.contains(city)) return;
     _selectedCity = city;

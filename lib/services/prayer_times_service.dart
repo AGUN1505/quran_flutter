@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+// Model data untuk merepresentasikan waktu sholat harian lengkap
 class PrayerTimings {
   final String subuh;
   final String sunrise;
@@ -24,6 +25,7 @@ class PrayerTimings {
     required this.dateReadable,
   });
 
+  // Membuat objek PrayerTimings dari data JSON API eQuran shalat
   factory PrayerTimings.fromEquranJson(Map<String, dynamic> data, int day) {
     final list = data['jadwal'] as List;
     final item = list.firstWhere(
@@ -45,9 +47,11 @@ class PrayerTimings {
   }
 }
 
+// Service API Client untuk mengambil data wilayah sholat dan jadwal sholat Indonesia
 class PrayerTimesService {
   static const String baseUrl = 'https://equran.id/api/v2/shalat';
 
+  // Mengambil daftar provinsi lengkap di Indonesia dari server API
   Future<List<String>> fetchProvinces() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/provinsi'));
@@ -64,6 +68,7 @@ class PrayerTimesService {
     }
   }
 
+  // Mengambil daftar kabupaten/kota berdasarkan provinsi dari server API
   Future<List<String>> fetchKabKota(String provinsi) async {
     try {
       final response = await http.post(
@@ -84,6 +89,7 @@ class PrayerTimesService {
     }
   }
 
+  // Mengambil jadwal sholat bulanan dan memfilter untuk hari tertentu
   Future<PrayerTimings> getPrayerTimes({
     required String provinsi,
     required String kabkota,

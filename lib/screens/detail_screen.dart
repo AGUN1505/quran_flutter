@@ -10,6 +10,7 @@ import 'tafsir_screen.dart';
 import '../widgets/shimmer_loading.dart';
 import '../controllers/settings_controller.dart';
 
+// Halaman detail surat yang menampilkan daftar ayat, terjemahan, kontrol audio per ayat, dan tafsir
 class DetailScreen extends StatefulWidget {
   final Surah surah;
   final int? initialAyahNo;
@@ -24,6 +25,7 @@ class DetailScreen extends StatefulWidget {
   State<DetailScreen> createState() => _DetailScreenState();
 }
 
+// State untuk DetailScreen yang mengelola scroll controller, inisialisasi detail surat, dan pemutaran audio
 class _DetailScreenState extends State<DetailScreen> {
   final SurahDetailController _detailController = SurahDetailController();
   final AudioController _audioController = AudioController();
@@ -32,6 +34,7 @@ class _DetailScreenState extends State<DetailScreen> {
   final Map<int, GlobalKey> _ayahKeys = {};
   bool _hasScrolled = false;
 
+  // Menginisialisasi controller, memuat detail surat dari API, dan menambahkan listener scroll
   @override
   void initState() {
     super.initState();
@@ -39,10 +42,12 @@ class _DetailScreenState extends State<DetailScreen> {
     _scrollController.addListener(_onScroll);
   }
 
+  // Mengirim perubahan offset scroll ke notifier untuk memicu pembaruan antarmuka
   void _onScroll() {
     _scrollOffsetNotifier.value = _scrollController.offset;
   }
 
+  // Membersihkan listener dan resource controller saat halaman ditutup
   @override
   void dispose() {
     _scrollController.removeListener(_onScroll);
@@ -52,6 +57,7 @@ class _DetailScreenState extends State<DetailScreen> {
     super.dispose();
   }
 
+  // Melakukan scroll otomatis halaman ke posisi nomor ayat tertentu dengan perkiraan ketinggian kartu
   void _scrollToAyah(List<Ayat> ayatList, int ayahNo) {
     final index = ayatList.indexWhere((a) => a.nomorAyat == ayahNo);
     if (index != -1) {
@@ -84,6 +90,7 @@ class _DetailScreenState extends State<DetailScreen> {
     }
   }
 
+  // Mengirim instruksi play ke AudioController untuk memainkan murottal ayat tertentu
   Future<void> _handleAyahPlay(String url, int index, int ayahNo) async {
     try {
       await _audioController.playAyah(

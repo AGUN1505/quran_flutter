@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/surah.dart';
 import 'islamic_star_ornament.dart';
 
+// Widget kartu untuk menampilkan item surat pada daftar surat di beranda (nama Latin, Arab, arti, jumlah ayat)
 class SurahCard extends StatelessWidget {
   final Surah surah;
   final VoidCallback onTap;
@@ -13,6 +14,7 @@ class SurahCard extends StatelessWidget {
     required this.onTap,
   });
 
+  // Membangun visual kartu surat dengan interaksi klik navigasi
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Pilihan suara adzan untuk notifikasi
+// Pilihan suara adzan untuk notifikasi
 enum AdzanSound {
   mekah,      // Adzan Masjidil Haram
   madinah,    // Adzan Masjid Nabawi
@@ -9,7 +9,9 @@ enum AdzanSound {
   defaultSystem, // Suara notifikasi bawaan HP
 }
 
+// Ekstensi untuk mendapatkan atribut representatif dari tipe suara AdzanSound
 extension AdzanSoundExtension on AdzanSound {
+  // Mendapatkan label teks nama suara adzan dalam Bahasa Indonesia
   String get label {
     switch (this) {
       case AdzanSound.mekah:     return 'Adzan Mekah';
@@ -39,6 +41,7 @@ extension AdzanSoundExtension on AdzanSound {
     }
   }
 
+  // Mendapatkan nama deskriptif dari channel notifikasi Android
   String get channelName {
     switch (this) {
       case AdzanSound.mekah:     return 'Waktu Sholat (Adzan Mekah)';
@@ -49,12 +52,14 @@ extension AdzanSoundExtension on AdzanSound {
   }
 }
 
+// Controller singleton untuk mengelola pengaturan aktifasi notifikasi dan suara adzan per waktu sholat
 class NotificationSettingsController extends ChangeNotifier {
   static final NotificationSettingsController _instance =
       NotificationSettingsController._internal();
 
   factory NotificationSettingsController() => _instance;
 
+  // Inisialisasi awal controller dan memuat data preferensi tersimpan
   NotificationSettingsController._internal() {
     _loadSettings();
   }
@@ -86,6 +91,7 @@ class NotificationSettingsController extends ChangeNotifier {
   bool get maghribEnabled => _maghribEnabled;
   bool get isyaEnabled    => _isyaEnabled;
 
+  // Memuat pengaturan notifikasi dari SharedPreferences penyimpanan lokal
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     final soundIndex = prefs.getInt(_keySound) ?? 0;
@@ -100,6 +106,7 @@ class NotificationSettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Menyimpan suara adzan pilihan baru ke penyimpanan lokal
   Future<void> setSound(AdzanSound sound) async {
     _selectedSound = sound;
     notifyListeners();
@@ -107,6 +114,7 @@ class NotificationSettingsController extends ChangeNotifier {
     await prefs.setInt(_keySound, sound.index);
   }
 
+  // Menyimpan status aktifasi notifikasi global ke penyimpanan lokal
   Future<void> setGlobalEnabled(bool value) async {
     _globalEnabled = value;
     notifyListeners();
@@ -114,6 +122,7 @@ class NotificationSettingsController extends ChangeNotifier {
     await prefs.setBool(_keyEnabled, value);
   }
 
+  // Menyimpan status aktifasi notifikasi waktu Imsak ke penyimpanan lokal
   Future<void> setImsakEnabled(bool value) async {
     _imsakEnabled = value;
     notifyListeners();
@@ -121,6 +130,7 @@ class NotificationSettingsController extends ChangeNotifier {
     await prefs.setBool(_keyImsak, value);
   }
 
+  // Menyimpan status aktifasi notifikasi waktu Subuh ke penyimpanan lokal
   Future<void> setSubuhEnabled(bool value) async {
     _subuhEnabled = value;
     notifyListeners();
@@ -128,6 +138,7 @@ class NotificationSettingsController extends ChangeNotifier {
     await prefs.setBool(_keySubuh, value);
   }
 
+  // Menyimpan status aktifasi notifikasi waktu Dzuhur ke penyimpanan lokal
   Future<void> setDzuhurEnabled(bool value) async {
     _dzuhurEnabled = value;
     notifyListeners();
@@ -135,6 +146,7 @@ class NotificationSettingsController extends ChangeNotifier {
     await prefs.setBool(_keyDzuhur, value);
   }
 
+  // Menyimpan status aktifasi notifikasi waktu Ashar ke penyimpanan lokal
   Future<void> setAsharEnabled(bool value) async {
     _asharEnabled = value;
     notifyListeners();
@@ -142,6 +154,7 @@ class NotificationSettingsController extends ChangeNotifier {
     await prefs.setBool(_keyAshar, value);
   }
 
+  // Menyimpan status aktifasi notifikasi waktu Maghrib ke penyimpanan lokal
   Future<void> setMaghribEnabled(bool value) async {
     _maghribEnabled = value;
     notifyListeners();
@@ -149,6 +162,7 @@ class NotificationSettingsController extends ChangeNotifier {
     await prefs.setBool(_keyMaghrib, value);
   }
 
+  // Menyimpan status aktifasi notifikasi waktu Isya ke penyimpanan lokal
   Future<void> setIsyaEnabled(bool value) async {
     _isyaEnabled = value;
     notifyListeners();

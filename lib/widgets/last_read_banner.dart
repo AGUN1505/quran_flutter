@@ -4,9 +4,11 @@ import '../controllers/bookmark_controller.dart';
 import '../controllers/surah_controller.dart';
 import '../screens/detail_screen.dart';
 
+// Widget banner yang menampilkan riwayat ayat terakhir yang dibaca pengguna dan tombol untuk melanjutkannya
 class LastReadBanner extends StatelessWidget {
   const LastReadBanner({super.key});
 
+  // Membangun tampilan banner secara dinamis berdasarkan status bacaan terakhir di BookmarkController
   @override
   Widget build(BuildContext context) {
     final bookmarkController = BookmarkController();

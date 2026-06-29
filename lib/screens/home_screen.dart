@@ -12,6 +12,7 @@ import '../widgets/qiblah_compass_tab.dart';
 import 'settings_screen.dart';
 import 'search_screen.dart';
 
+// Halaman utama aplikasi (Home Screen) yang mengintegrasikan berbagai tab navigasi utama
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// State untuk HomeScreen yang mengelola pilihan tab aktif dan menampilkan floating overlay pemutar audio
 class _HomeScreenState extends State<HomeScreen> {
   final SettingsController _settingsController = SettingsController();
   int _currentIndex = 0;
@@ -31,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const QiblahCompassTab(),
   ];
 
+  // Membangun tampilan utama dengan AppBar, transisi tab animasi, pemutar audio melayang, dan floating navbar
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;
@@ -145,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+// Widget kustom bilah navigasi melayang (Floating Navigation Bar) yang mendukung animasi transisi
 class CustomFloatingNavBar extends StatefulWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -159,6 +163,7 @@ class CustomFloatingNavBar extends StatefulWidget {
   State<CustomFloatingNavBar> createState() => _CustomFloatingNavBarState();
 }
 
+// State untuk CustomFloatingNavBar yang menangani perhitungan animasi transisi antar tab dan interaksi geser (drag)
 class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late double _previousIndex;
@@ -166,6 +171,7 @@ class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with Single
   double? _dragIndex;
   bool _isDragging = false;
 
+  // Menginisialisasi controller animasi dan mendengarkan perubahannya
   @override
   void initState() {
     super.initState();
@@ -182,6 +188,7 @@ class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with Single
     _controller.value = 1.0;
   }
 
+  // Menangani pembaruan widget ketika tab aktif berubah secara eksternal
   @override
   void didUpdateWidget(CustomFloatingNavBar oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -192,12 +199,14 @@ class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with Single
     }
   }
 
+  // Membersihkan resource controller animasi saat widget dibuang
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
+  // Menangani pergerakan geser jari pengguna untuk memperkirakan posisi indeks tab
   void _handleDrag(double localX) {
     setState(() {
       _isDragging = true;
@@ -208,6 +217,7 @@ class _CustomFloatingNavBarState extends State<CustomFloatingNavBar> with Single
     });
   }
 
+  // Menangani akhir dari gesekan jari dan berpindah ke tab terdekat yang paling sesuai
   void _handleDragEnd() {
     if (_dragIndex == null) return;
     final int nearestPage = _dragIndex!.round();

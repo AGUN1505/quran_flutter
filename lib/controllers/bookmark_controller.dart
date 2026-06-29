@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// Item representasi data ayat yang ditandai (di-bookmark)
 class BookmarkItem {
   final int surahNo;
   final String surahName;
@@ -13,12 +14,14 @@ class BookmarkItem {
     required this.ayahNo,
   });
 
+  // Mengubah objek BookmarkItem ke format JSON
   Map<String, dynamic> toJson() => {
         'surahNo': surahNo,
         'surahName': surahName,
         'ayahNo': ayahNo,
       };
 
+  // Membuat objek BookmarkItem dari data JSON
   factory BookmarkItem.fromJson(Map<String, dynamic> json) => BookmarkItem(
         surahNo: json['surahNo'] as int,
         surahName: json['surahName'] as String,
@@ -26,6 +29,7 @@ class BookmarkItem {
       );
 }
 
+// Controller singleton untuk mengelola daftar bookmark dan riwayat bacaan terakhir
 class BookmarkController extends ChangeNotifier {
   static final BookmarkController _instance = BookmarkController._internal();
 
@@ -33,6 +37,7 @@ class BookmarkController extends ChangeNotifier {
     return _instance;
   }
 
+  // Inisialisasi awal controller dan memuat data tersimpan dari SharedPreferences
   BookmarkController._internal() {
     _loadData();
   }
@@ -54,6 +59,7 @@ class BookmarkController extends ChangeNotifier {
 
   bool get hasLastRead => _lastReadSurahNo != null && _lastReadAyahNo != null;
 
+  // Memuat data bookmark dan riwayat bacaan terakhir dari penyimpanan lokal
   Future<void> _loadData() async {
     final prefs = await SharedPreferences.getInstance();
     _lastReadSurahNo = prefs.getInt(_keyLastReadSurahNo);
@@ -72,6 +78,7 @@ class BookmarkController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Menyimpan riwayat ayat terakhir yang dibaca pengguna ke penyimpanan lokal
   Future<void> saveLastRead(int surahNo, String surahName, int ayahNo) async {
     _lastReadSurahNo = surahNo;
     _lastReadSurahName = surahName;
@@ -84,6 +91,7 @@ class BookmarkController extends ChangeNotifier {
     await prefs.setInt(_keyLastReadAyahNo, ayahNo);
   }
 
+  // Menambahkan atau menghapus ayat dari daftar bookmark berdasarkan statusnya saat ini
   Future<void> toggleBookmark(int surahNo, String surahName, int ayahNo) async {
     final index = _bookmarks.indexWhere(
         (b) => b.surahNo == surahNo && b.ayahNo == ayahNo);
@@ -104,6 +112,7 @@ class BookmarkController extends ChangeNotifier {
     await prefs.setStringList(_keyBookmarks, jsonList);
   }
 
+  // Memeriksa apakah ayat tertentu sudah ada di dalam daftar bookmark lokal
   bool isBookmarked(int surahNo, int ayahNo) {
     return _bookmarks.any((b) => b.surahNo == surahNo && b.ayahNo == ayahNo);
   }

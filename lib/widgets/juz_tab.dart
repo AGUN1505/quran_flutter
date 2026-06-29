@@ -5,6 +5,7 @@ import '../screens/detail_screen.dart';
 
 import '../widgets/shimmer_loading.dart';
 
+// Panel Tab untuk menampilkan daftar Juz 1 sampai Juz 30 beserta pemetaan awal ayatnya
 class JuzTab extends StatelessWidget {
   JuzTab({super.key});
 
@@ -43,6 +44,7 @@ class JuzTab extends StatelessWidget {
     {'juz': 30, 'surahNo': 78, 'surahName': 'An-Naba\'', 'ayahNo': 1},
   ];
 
+  // Membangun tampilan daftar Juz dengan loading shimmer atau list item navigasi ke surat detail
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

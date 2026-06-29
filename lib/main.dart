@@ -4,6 +4,7 @@ import 'controllers/settings_controller.dart';
 import 'screens/splash_screen.dart';
 import 'services/notification_service.dart';
 
+// Fungsi utama untuk menjalankan aplikasi Flutter Al-Quran Indonesia
 void main() async {
   // Ensure widget binding is initialized for SharedPreferences and notifications
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,9 +13,11 @@ void main() async {
   runApp(const QuranApp());
 }
 
+// Widget utama root aplikasi QuranApp
 class QuranApp extends StatelessWidget {
   const QuranApp({super.key});
 
+  // Membangun MaterialApp dengan tema terang/gelap serta lokalisasi font Poppins
   @override
   Widget build(BuildContext context) {
     final settingsController = SettingsController();

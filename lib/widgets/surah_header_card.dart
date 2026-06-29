@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/surah.dart';
 
+// Widget kartu header di halaman detail surat yang menampilkan nama surat, tempat turun, jumlah ayat, dan tombol pemutar murottal penuh
 class SurahHeaderCard extends StatelessWidget {
   final Surah surah;
   final SurahDetail? detail;
@@ -18,6 +19,7 @@ class SurahHeaderCard extends StatelessWidget {
     this.shrinkProgress = 0.0,
   });
 
+  // Membangun header surat dengan interpolasi ukuran padding dan font saat discroll (shrink)
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

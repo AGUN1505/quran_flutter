@@ -5,6 +5,7 @@ import '../controllers/tafsir_controller.dart';
 import '../widgets/tafsir_card.dart';
 import '../widgets/shimmer_loading.dart';
 
+// Halaman pembacaan Tafsir Al-Quran dari suatu surat
 class TafsirScreen extends StatefulWidget {
   final Surah surah;
   const TafsirScreen({super.key, required this.surah});
@@ -13,21 +14,25 @@ class TafsirScreen extends StatefulWidget {
   State<TafsirScreen> createState() => _TafsirScreenState();
 }
 
+// State untuk TafsirScreen yang mengelola pemuatan data tafsir dari API
 class _TafsirScreenState extends State<TafsirScreen> {
   final TafsirController _controller = TafsirController();
 
+  // Menginisialisasi state dan memicu penarikan data tafsir dari API
   @override
   void initState() {
     super.initState();
     _controller.fetchTafsir(widget.surah.nomor);
   }
 
+  // Membersihkan resource controller saat halaman ditutup
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
+  // Membangun tampilan daftar tafsir dengan loading shimmer, pesan error, atau daftar TafsirCard
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;

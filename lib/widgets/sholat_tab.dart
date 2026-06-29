@@ -3,11 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import '../controllers/prayer_times_controller.dart';
 import '../widgets/shimmer_loading.dart';
 
+// Panel Tab untuk menampilkan jadwal sholat harian berdasarkan daerah/kabupaten terpilih
 class SholatTab extends StatelessWidget {
   SholatTab({super.key});
 
   final PrayerTimesController _prayerTimesController = PrayerTimesController();
 
+  // Membangun tampilan daftar jadwal sholat lengkap dengan selector dropdown daerah
   @override
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).primaryColor;
@@ -225,6 +227,7 @@ class SholatTab extends StatelessWidget {
     );
   }
 
+  // Widget pembantu untuk merender baris kartu jadwal sholat (label nama dan jam sholat)
   Widget _buildTimingRow(BuildContext context, String label, String time, Color themeColor) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
