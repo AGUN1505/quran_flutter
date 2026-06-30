@@ -4,5 +4,8 @@
       "Bash(flutter analyze *)",
       "Bash(flutter test *)"
     ]
+  },
+  "enabledPlugins": {
+    "github@claude-plugins-official": true
   }
 }
